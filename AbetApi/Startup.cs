@@ -28,10 +28,15 @@ namespace AbetApi
         {
             byte[] key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("SecretApiKey"));
 
-            byte[] AES_SALT = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("AES_SALT"));
-            int AES_ITERATIONS = System.Convert.ToInt32(Environment.GetEnvironmentVariable("AES_ITERATIONS"));
-            int AES_LEN_KEY = System.Convert.ToInt32(Environment.GetEnvironmentVariable("AES_LEN_KEY"));
-            int AES_LEN_INIT_VEC = System.Convert.ToInt32(Environment.GetEnvironmentVariable("AES_LEN_INIT_VEC"));
+            try
+            {
+                string SALT = Environment.GetEnvironmentVariable("HASH_SALT");
+                int ITERATIONS = Convert.ToInt32(Environment.GetEnvironmentVariable("HASH_ITERATIONS"));
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("Failed to get configuration for sha256 hash algorithm:\n  Did you set your environment variables?\n  Error: " + e.Message);
+            }
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
