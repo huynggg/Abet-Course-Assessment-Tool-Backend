@@ -61,10 +61,9 @@ namespace AbetApi.Controllers
             System.Diagnostics.Debug.WriteLine("EUID: " + EUID);
             System.Diagnostics.Debug.WriteLine("Password: " + password);
 
-            //byte[] encryptedPasswordBytes = Convert.FromBase64String(HttpUtility.UrlDecode(encryptedPassword));
-            byte[] encryptedPasswordBytes = Encoding.ASCII.GetBytes(Base64UrlEncoder.Decode(password));
-            var cipher = new Security.AES(password); // create a new cipher object to handle decryption
-            password = cipher.Decrypt(encryptedPasswordBytes); // decrypt the password using the cipher
+            //byte[] encryptedPasswordBytes = Convert.FromBase64String(HttpUtility.UrlDecode(password));
+            string encryptedPasswordBytes = password;
+            password = Security.Hash.Decrypt(encryptedPasswordBytes); // decrypt the password using the cipher
 
             System.Diagnostics.Debug.WriteLine("Password: " + password);
 
